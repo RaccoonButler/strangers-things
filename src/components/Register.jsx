@@ -1,4 +1,8 @@
 import React, { useState } from 'react';
+import { logIn } from './Auth'; // Import the logIn function
+
+const COHORT_NAME = '2306-FTB-ET-WEB-FT';
+const BASE_URL = `https://strangers-things.herokuapp.com/api/${COHORT_NAME}`;
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -30,14 +34,16 @@ const Register = () => {
           },
         }),
       });
-      if (response.ok) {
-        const data = await response.json();
-        // Save the token in state and/or sessionStorage
-        // For simplicity, let's just log it for now
-        console.log('Registration successful. Token:', data.data.token);
+      const data = await response.json();
+
+      // Check if the registration was successful based on the response
+      if (response.ok && data.success) {
+        logIn(data.data.token); // Update login state with the received token
+        console.log(data.message); // Display success message
       } else {
         // Handle registration error (invalid username, password, etc.)
         console.error('Registration failed');
+        console.error(data.error); // Display the specific error message from the server
       }
     } catch (error) {
       console.error('Error during registration:', error);
@@ -66,7 +72,7 @@ const Register = () => {
             value={formData.password}
             onChange={handleChange}
             required
-            minLength={6} // Set your desired minimum password length
+            minLength={6}
           />
         </div>
         <div>

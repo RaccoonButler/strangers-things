@@ -8,6 +8,7 @@ import Register from './components/Register';
 import Logout from './components/Logout';
 import './App.css';
 
+
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [token, setToken] = useState(null);

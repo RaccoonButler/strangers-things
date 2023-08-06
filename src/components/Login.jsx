@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Register from './Register';
+import { logIn } from './Auth'; // Import the logIn function
+
+const COHORT_NAME = '2306-FTB-ET-WEB-FT';
+const BASE_URL = `https://strangers-things.herokuapp.com/api/${COHORT_NAME}`;
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -21,7 +25,25 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      // ... your login logic
+      const response = await fetch(`${BASE_URL}/users/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user: {
+            username: formData.username,
+            password: formData.password,
+          },
+        }),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        logIn(data.data.token); // Update login state
+      } else {
+        // Handle login error (invalid username, password, etc.)
+        console.error('Login failed');
+      }
     } catch (error) {
       console.error('Error during login:', error);
     }
@@ -59,7 +81,7 @@ const Login = () => {
             />
           </div>
           <button type="submit">Login</button>
-          <p class="signup">
+          <p className="signup">
             Not registered?{' '}
             <Link to="#" onClick={handleToggleRegister}>
               Sign up?

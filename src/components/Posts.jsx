@@ -7,7 +7,6 @@ const Posts = () => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    // Function to fetch initial posts
     const fetchPosts = async () => {
       try {
         const response = await fetch(`${BASE_URL}/posts`);
@@ -24,9 +23,14 @@ const Posts = () => {
     fetchPosts();
   }, []);
 
+  // If posts are still being fetched, display a loading message
+  if (posts.length === 0) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="posts-container">
-      <h1>Posts</h1>
+      <h1>Marketplace</h1>
       {posts.map((post) => (
         <div key={post._id} className="post-card">
           <h2>{post.title}</h2>
