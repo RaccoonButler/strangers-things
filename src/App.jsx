@@ -6,6 +6,7 @@ import Posts from './components/Posts';
 import Login from './components/Login';
 import Register from './components/Register';
 import Logout from './components/Logout';
+import Dashboard from './components/Dashboard'; 
 import './App.css';
 
 
@@ -33,6 +34,7 @@ function App() {
           element={<Login onLogin={handleLogin} isLoggedIn={isLoggedIn} />}
         />
         <Route path="/register" element={<Register />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route
           path="/logout"
           element={<Logout onLogout={handleLogout} isLoggedIn={isLoggedIn} />}

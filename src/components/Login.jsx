@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Register from './Register';
 import { logIn } from './Auth'; // Import the logIn function
+import { useNavigate } from 'react-router-dom'; // Import the useNavigate hook
 
 const COHORT_NAME = '2306-FTB-ET-WEB-FT';
 const BASE_URL = `https://strangers-things.herokuapp.com/api/${COHORT_NAME}`;
@@ -13,6 +14,7 @@ const Login = () => {
   });
 
   const [isRegisterMode, setIsRegisterMode] = useState(false);
+  const navigate = useNavigate(); // Get the navigate function from useNavigate
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -40,6 +42,7 @@ const Login = () => {
       if (response.ok) {
         const data = await response.json();
         logIn(data.data.token); // Update login state
+        navigate('/dashboard'); // Navigate to the dashboard upon successful login
       } else {
         // Handle login error (invalid username, password, etc.)
         console.error('Login failed');

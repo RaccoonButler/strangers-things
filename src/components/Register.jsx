@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { logIn } from './Auth'; // Import the logIn function
+import { useNavigate } from 'react-router-dom'; // Import the useNavigate hook
 
 const COHORT_NAME = '2306-FTB-ET-WEB-FT';
 const BASE_URL = `https://strangers-things.herokuapp.com/api/${COHORT_NAME}`;
@@ -11,7 +12,7 @@ const Register = () => {
     confirmPassword: '',
   });
 
-  console.log(formData)
+  const navigate = useNavigate(); // Get the navigate function from useNavigate
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,15 +37,22 @@ const Register = () => {
           },
         }),
       });
-      const result = await response.json();
-      // You can log ▲▲▲ the result
-      // here ▼▼▼ to view the json object before returning it
-            console.log(result)
-            return result
-          } catch (err) {
-            console.error(err);
-          }
-        }
+      const data = await response.json();
+
+      // Check if the registration was successful based on the response
+      if (response.ok && data.success) {
+        logIn(data.data.token); // Update login state with the received token
+        console.log(data.message); // Display success message
+        navigate('/dashboard'); // Navigate to the dashboard upon successful registration
+      } else {
+        // Handle registration error (invalid username, password, etc.)
+        console.error('Registration failed');
+        console.error(data.error); // Display the specific error message from the server
+      }
+    } catch (error) {
+      console.error('Error during registration:', error);
+    }
+  };
 
   return (
     <div>
@@ -68,7 +76,7 @@ const Register = () => {
             value={formData.password}
             onChange={handleChange}
             required
-            minLength={6}
+            minLength={6} // Set your desired minimum password length
           />
         </div>
         <div>
