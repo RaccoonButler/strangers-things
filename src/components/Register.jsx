@@ -11,6 +11,8 @@ const Register = () => {
     confirmPassword: '',
   });
 
+  console.log(formData)
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
@@ -34,21 +36,15 @@ const Register = () => {
           },
         }),
       });
-      const data = await response.json();
-
-      // Check if the registration was successful based on the response
-      if (response.ok && data.success) {
-        logIn(data.data.token); // Update login state with the received token
-        console.log(data.message); // Display success message
-      } else {
-        // Handle registration error (invalid username, password, etc.)
-        console.error('Registration failed');
-        console.error(data.error); // Display the specific error message from the server
-      }
-    } catch (error) {
-      console.error('Error during registration:', error);
-    }
-  };
+      const result = await response.json();
+      // You can log ▲▲▲ the result
+      // here ▼▼▼ to view the json object before returning it
+            console.log(result)
+            return result
+          } catch (err) {
+            console.error(err);
+          }
+        }
 
   return (
     <div>
